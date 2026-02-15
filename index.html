@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fortune Cookie Scroll</title>
     <style>
+        * { box-sizing: border-box; }
+        
         body {
             background-color: #f7f1e3;
             display: flex;
@@ -14,25 +16,27 @@
             min-height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            overflow-x: hidden; /* Prevents side-scrolling */
+            overflow: hidden; /* Prevent any bouncing/scrolling */
         }
 
+        /* Subtler shake for mobile stability */
         @keyframes subtleShake {
             0% { transform: rotate(0deg); }
-            25% { transform: rotate(-1.5deg); }
-            75% { transform: rotate(1.5deg); }
+            25% { transform: rotate(-1deg); }
+            75% { transform: rotate(1deg); }
             100% { transform: rotate(0deg); }
         }
 
         .cookie-wrapper {
             position: relative;
-            width: 100%;
-            max-width: 500px;
-            height: 300px;
+            width: 90vw; /* Occupy 90% of screen width max */
+            max-width: 400px;
+            height: 200px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
+            margin: 0 auto;
         }
 
         .shaking .cookie-half {
@@ -49,55 +53,50 @@
             font-family: "Times New Roman", Times, serif;
             color: #1a1a1a;
             text-align: center;
-            
-            /* Flexible width and height */
-            width: 0px; 
-            max-width: 80vw; /* Keeps it within mobile screen width */
-            min-height: 40px;
-            overflow: hidden;
+            width: 0; 
             opacity: 0;
             z-index: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            overflow: hidden;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
 
         .cookie-half {
-            width: 140px;
+            width: 130px; /* Base size */
+            height: auto;
             z-index: 2;
-            transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none; /* Allows click to pass through to container */
         }
 
-        /* --- DESKTOP ANIMATION --- */
-        .open #left { transform: translateX(-120px) rotate(-20deg); }
-        .open #right { transform: translateX(120px) rotate(20deg); }
+        /* DESKTOP OPEN STATE */
+        .open #left { transform: translateX(-100px) rotate(-20deg); }
+        .open #right { transform: translateX(100px) rotate(20deg); }
         .open .fortune-text { 
-            width: 280px; 
+            width: 240px; 
             opacity: 1;
-            padding: 15px 10px;
+            padding: 10px;
         }
 
-        /* --- MOBILE STYLES (Screen sizes smaller than 500px) --- */
-        @media (max-width: 500px) {
+        /* MOBILE OPTIMIZATION */
+        @media (max-width: 480px) {
             .cookie-half {
-                width: 100px; /* Smaller cookie images */
+                width: 100px; /* Smaller images for mobile */
             }
-            /* Move halves less so they stay on screen */
-            .open #left { transform: translateX(-65px) rotate(-15deg); }
-            .open #right { transform: translateX(65px) rotate(15deg); }
-            
+            /* Narrower break so they don't hit screen edges */
+            .open #left { transform: translateX(-60px) rotate(-15deg); }
+            .open #right { transform: translateX(60px) rotate(15deg); }
             .open .fortune-text { 
-                width: 150px; /* Narrower scroll for small screens */
-                opacity: 1;
+                width: 160px; /* Narrower paper */
                 font-size: 0.85rem;
-                padding: 10px 5px;
             }
         }
 
         #reset-btn {
-            margin-top: 20px;
-            padding: 15px 30px; /* Larger tap target for fingers */
+            margin-top: 30px;
+            padding: 12px 24px;
             background: #d1ccc0;
             border: 2px solid #84817a;
             border-radius: 8px;
@@ -105,6 +104,7 @@
             font-weight: bold;
             display: none;
             font-size: 1rem;
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
@@ -183,13 +183,14 @@
             let nums = [];
             while(nums.length < 5){
                 let r = Math.floor(Math.random() * 99) + 1;
-                if(nums.indexOf(r) === -1) nums.push(r);
+                if(!nums.includes(r)) nums.push(r);
             }
             return nums.join(" - ");
         }
 
         function openCookie() {
             if (container.classList.contains('open') || container.classList.contains('shaking')) return;
+            
             container.classList.add('shaking');
 
             setTimeout(() => {
@@ -197,10 +198,9 @@
                 const random = Math.floor(Math.random() * fortunes.length);
                 const luckyNums = generateNumbers();
                 
-                // Using innerHTML to allow text wrapping for long fortunes
                 display.innerHTML = `
-                    <div style="margin-bottom: 6px; white-space: normal;">${fortunes[random]}</div>
-                    <div style="font-size: 10px; color: #777; font-family: sans-serif; letter-spacing: 1px;">
+                    <div style="margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
+                    <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold;">
                         LUCKY NUMBERS: ${luckyNums}
                     </div>
                 `;
