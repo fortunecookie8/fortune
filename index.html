@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune Cookie</title>
+    <style>
+        body {
+            background-color: #f7f1e3;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* The Shaking Animation */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        .cookie-wrapper {
+            position: relative;
+            width: 320px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        /* Shaking Class */
+        .shaking .cookie-half {
+            animation: shake 0.5s;
+            animation-iteration-count: infinite;
+        }
+
+        /* The Styled Fortune Paper */
+        .fortune-text {
+            position: absolute;
+            background: #fffdfa;
+            padding: 12px 20px;
+            border-top: 2px solid #2e5984; 
+            border-bottom: 2px solid #2e5984;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            font-family: "Times New Roman", Times, serif;
+            font-size: 1.1rem;
+            color: #1a1a1a;
+            text-align: center;
+            width: 220px;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.7s ease 0.4s;
+            z-index: 1;
+        }
+
+        /* Cookie Images */
+        .cookie-half {
+            width: 150px;
+            z-index: 2;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Opening Action */
+        .open #left { transform: translateX(-110px) rotate(-35deg); opacity: 0.8; }
+        .open #right { transform: translateX(110px) rotate(35deg); opacity: 0.8; }
+        .open .fortune-text { opacity: 1; transform: scale(1); }
+
+        #reset-btn {
+            margin-top: 60px;
+            padding: 12px 24px;
+            background: #d1ccc0;
+            border: 2px solid #84817a;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            display: none;
+        }
+        
+        #reset-btn:hover { background: #aaa69d; }
+    </style>
+</head>
+<body>
+
+    <div class="cookie-wrapper" id="cookie-container" onclick="openCookie()">
+        <p id="fortune-display" class="fortune-text"></p>
+        <img src="left.png" id="left" class="cookie-half" alt="Left side">
+        <img src="right.png" id="right" class="cookie-half" alt="Right side">
+    </div>
+
+    <button id="reset-btn" onclick="resetCookie()">Open Another Cookie</button>
+
+    <script>
+        const fortunes = [
+            "A faithful friend is a strong defense.",
+            "A fresh start will put all your doubts to rest.",
+            "A golden opportunity will shortly present itself.",
+            "A smile is your personal welcome mat.",
+            "All your hard work will soon pay off.",
+            "An exciting adventure awaits you.",
+            "Be on the lookout for coming events; they cast their shadows beforehand.",
+            "Believe in yourself and others will too.",
+            "Change is happening in your life, so go with the flow!",
+            "Don’t just think, act!",
+            "Every day is a new opportunity to reach your goals.",
+            "Expect much of yourself and little of others.",
+            "Failure is the chance to do better next time.",
+            "Follow your heart and you will find happiness.",
+            "Great things are in store for you.",
+            "Happiness is not a goal; it is a by-product.",
+            "Hard work pays off in the future, laziness pays off now.",
+            "If you want the rainbow, you must endure the rain.",
+            "Imagination rules the world.",
+            "It takes courage to grow up and become who you really are.",
+            "Keep your eyes open; a surprise is coming.",
+            "Listen to your heart; it knows the way.",
+            "Many will travel to exotic places, you will stay home and save money.",
+            "Nature, time, and patience are the three great physicians.",
+            "New discoveries will be made today.",
+            "Opportunity knocks on your door only once.",
+            "Patience is a virtue, but waiting too long is a mistake.",
+            "Practice makes perfect.",
+            "Remember to share good fortune with others.",
+            "Success is a journey, not a destination.",
+            "The best way to predict the future is to create it.",
+            "The heart is wiser than the intellect.",
+            "The road to riches is paved with hard work.",
+            "There is no such thing as a free lunch.",
+            "Things are not always as they seem.",
+            "Trust your intuition.",
+            "Wait for the right moment; it will come.",
+            "Wealth is not about having a lot of money; it's about having a lot of options.",
+            "What you seek is seeking you.",
+            "Wisdom is the reward you get for a lifetime of listening.",
+            "You are capable of more than you think.",
+            "You will be hungry again in one hour.",
+            "You will find great joy in the simple things.",
+            "You will live a long and happy life.",
+            "Your creativity will lead you to success.",
+            "Your kindness will be rewarded.",
+            "Your luck is about to change.",
+            "Your talents will be recognized and rewarded.",
+            "The reason it hasn’t happened yet is because it’s not supposed to happen yet",
+            "Don’t accept criticism from someone you wouldn’t accept advice from",
+            "To get something you don’t have, you have to do things you’ve never done.",
+            "Advice is like kissing. It costs nothing and is a pleasant thing to do.",
+            "Congratulations! You are on your way."
+        ];
+
+        const container = document.getElementById('cookie-container');
+        const display = document.getElementById('fortune-display');
+        const resetBtn = document.getElementById('reset-btn');
+
+        function generateNumbers() {
+            let nums = [];
+            while(nums.length < 5){
+                let r = Math.floor(Math.random() * 99) + 1;
+                if(nums.indexOf(r) === -1) nums.push(r);
+            }
+            return nums.join(" - ");
+        }
+
+        function openCookie() {
+            if (container.classList.contains('open') || container.classList.contains('shaking')) return;
+
+            // Start shaking
+            container.classList.add('shaking');
+
+            setTimeout(() => {
+                container.classList.remove('shaking');
+                
+                const random = Math.floor(Math.random() * fortunes.length);
+                const luckyNums = generateNumbers();
+                
+                display.innerHTML = `
+                    <div style="margin-bottom: 8px;">${fortunes[random]}</div>
+                    <div style="font-size: 11px; color: #555; font-family: sans-serif; border-top: 1px dashed #ccc; padding-top: 5px;">
+                        LUCKY NUMBERS: ${luckyNums}
+                    </div>
+                `;
+                
+                container.classList.add('open');
+                resetBtn.style.display = 'block';
+            }, 500);
+        }
+
+        function resetCookie() {
+            container.classList.remove('open');
+            resetBtn.style.display = 'none';
+            setTimeout(() => { display.innerHTML = ""; }, 400);
+        }
+    </script>
+</body>
+</html>
