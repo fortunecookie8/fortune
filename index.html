@@ -11,10 +11,10 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            overflow: hidden; /* Prevents scrolling during animation */
+            overflow-x: hidden; /* Prevents side-scrolling */
         }
 
         @keyframes subtleShake {
@@ -27,8 +27,8 @@
         .cookie-wrapper {
             position: relative;
             width: 100%;
-            max-width: 400px;
-            height: 250px;
+            max-width: 500px;
+            height: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -47,66 +47,64 @@
             border-bottom: 2px solid #2e5984;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             font-family: "Times New Roman", Times, serif;
-            font-size: 1.1rem;
             color: #1a1a1a;
             text-align: center;
+            
+            /* Flexible width and height */
             width: 0px; 
-            height: auto;
-            min-height: 60px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            max-width: 80vw; /* Keeps it within mobile screen width */
+            min-height: 40px;
             overflow: hidden;
             opacity: 0;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-            padding: 10px 0;
         }
 
         .cookie-half {
-            width: 150px; /* Desktop Size */
+            width: 140px;
             z-index: 2;
             transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         /* --- DESKTOP ANIMATION --- */
-        .open #left { transform: translateX(-140px) rotate(-25deg); }
-        .open #right { transform: translateX(140px) rotate(25deg); }
+        .open #left { transform: translateX(-120px) rotate(-20deg); }
+        .open #right { transform: translateX(120px) rotate(20deg); }
         .open .fortune-text { 
             width: 280px; 
             opacity: 1;
-            padding: 10px 20px;
+            padding: 15px 10px;
         }
 
-        /* --- MOBILE STYLES (Phones) --- */
-        @media (max-width: 480px) {
+        /* --- MOBILE STYLES (Screen sizes smaller than 500px) --- */
+        @media (max-width: 500px) {
             .cookie-half {
-                width: 110px; /* Smaller cookie for mobile */
+                width: 100px; /* Smaller cookie images */
             }
-            .fortune-text {
-                font-size: 0.9rem; /* Smaller text so it fits */
-            }
-            /* Shorter split so it stays on screen */
-            .open #left { transform: translateX(-90px) rotate(-20deg); }
-            .open #right { transform: translateX(90px) rotate(20deg); }
+            /* Move halves less so they stay on screen */
+            .open #left { transform: translateX(-65px) rotate(-15deg); }
+            .open #right { transform: translateX(65px) rotate(15deg); }
+            
             .open .fortune-text { 
-                width: 190px; 
+                width: 150px; /* Narrower scroll for small screens */
                 opacity: 1;
-                white-space: normal; /* Allows text to wrap on small screens */
+                font-size: 0.85rem;
+                padding: 10px 5px;
             }
         }
 
         #reset-btn {
-            margin-top: 40px;
-            padding: 12px 24px;
+            margin-top: 20px;
+            padding: 15px 30px; /* Larger tap target for fingers */
             background: #d1ccc0;
             border: 2px solid #84817a;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             display: none;
-            z-index: 10;
+            font-size: 1rem;
         }
     </style>
 </head>
@@ -192,18 +190,17 @@
 
         function openCookie() {
             if (container.classList.contains('open') || container.classList.contains('shaking')) return;
-
             container.classList.add('shaking');
 
             setTimeout(() => {
                 container.classList.remove('shaking');
-                
                 const random = Math.floor(Math.random() * fortunes.length);
                 const luckyNums = generateNumbers();
                 
+                // Using innerHTML to allow text wrapping for long fortunes
                 display.innerHTML = `
-                    <div style="margin-bottom: 4px; padding: 0 10px;">${fortunes[random]}</div>
-                    <div style="font-size: 10px; color: #777; font-family: sans-serif;">
+                    <div style="margin-bottom: 6px; white-space: normal;">${fortunes[random]}</div>
+                    <div style="font-size: 10px; color: #777; font-family: sans-serif; letter-spacing: 1px;">
                         LUCKY NUMBERS: ${luckyNums}
                     </div>
                 `;
