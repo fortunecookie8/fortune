@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fortune Cookie</title>
+    <title>Fortune Cookie Scroll</title>
     <style>
         body {
             background-color: #f7f1e3;
@@ -17,18 +17,17 @@
             overflow: hidden;
         }
 
-        /* Subtler, Smoother Shake */
         @keyframes subtleShake {
             0% { transform: rotate(0deg); }
-            25% { transform: rotate(-1deg); }
-            75% { transform: rotate(1deg); }
+            25% { transform: rotate(-1.5deg); }
+            75% { transform: rotate(1.5deg); }
             100% { transform: rotate(0deg); }
         }
 
         .cookie-wrapper {
             position: relative;
-            width: 320px;
-            height: 200px;
+            width: 400px; /* Wider container for the scroll effect */
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -36,44 +35,58 @@
         }
 
         .shaking .cookie-half {
-            animation: subtleShake 0.15s infinite;
+            animation: subtleShake 0.12s infinite;
         }
 
-        /* The Styled Fortune Paper */
+        /* THE SCROLL PAPER */
         .fortune-text {
             position: absolute;
             background: #fffdfa;
-            padding: 12px 20px;
+            /* Blue scroll borders */
             border-top: 2px solid #2e5984; 
             border-bottom: 2px solid #2e5984;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            
             font-family: "Times New Roman", Times, serif;
             font-size: 1.1rem;
             color: #1a1a1a;
             text-align: center;
-            width: 220px;
+            
+            /* The "Unroll" Secret */
+            width: 0px; /* Starts at zero width */
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Keeps text hidden until unrolled */
+            white-space: nowrap; /* Prevents text wrapping while unrolling */
+            
             opacity: 0;
-            transform: scale(0.5);
-            /* Slower transition for a more "graceful" glide */
-            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
             z-index: 1;
+            /* Transition for width and opacity */
+            transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.3s ease;
         }
 
-        /* Cookie Halves - The "Smooth" Secret */
         .cookie-half {
             width: 150px;
             z-index: 2;
-            /* Changed to a smoother, standard easing curve */
             transition: transform 0.9s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Opening Action */
-        .open #left { transform: translateX(-130px) rotate(-40deg); opacity: 0.7; }
-        .open #right { transform: translateX(130px) rotate(40deg); opacity: 0.7; }
-        .open .fortune-text { opacity: 1; transform: scale(1); }
+        /* Opening Action - Scroll Unrolls */
+        .open #left { transform: translateX(-140px) rotate(-25deg); }
+        .open #right { transform: translateX(140px) rotate(25deg); }
+        
+        .open .fortune-text { 
+            width: 260px; /* Final width of the scroll */
+            opacity: 1;
+            padding: 0 20px;
+        }
 
         #reset-btn {
-            margin-top: 60px;
+            margin-top: 40px;
             padding: 12px 24px;
             background: #d1ccc0;
             border: 2px solid #84817a;
@@ -81,7 +94,6 @@
             cursor: pointer;
             font-weight: bold;
             display: none;
-            transition: opacity 0.5s ease;
         }
         
         #reset-btn:hover { background: #aaa69d; }
@@ -90,7 +102,7 @@
 <body>
 
     <div class="cookie-wrapper" id="cookie-container" onclick="openCookie()">
-        <p id="fortune-display" class="fortune-text"></p>
+        <div id="fortune-display" class="fortune-text"></div>
         <img src="left.png" id="left" class="cookie-half" alt="Left side">
         <img src="right.png" id="right" class="cookie-half" alt="Right side">
     </div>
@@ -178,21 +190,23 @@
                 const random = Math.floor(Math.random() * fortunes.length);
                 const luckyNums = generateNumbers();
                 
+                // Content with subtle divider
                 display.innerHTML = `
-                    <div style="margin-bottom: 8px;">${fortunes[random]}</div>
-                    <div style="font-size: 11px; color: #555; font-family: sans-serif; border-top: 1px dashed #ccc; padding-top: 5px;">
+                    <div style="font-size: 1rem; margin-bottom: 4px;">${fortunes[random]}</div>
+                    <div style="font-size: 10px; color: #777; font-family: sans-serif; opacity: 0.8;">
                         LUCKY NUMBERS: ${luckyNums}
                     </div>
                 `;
                 
                 container.classList.add('open');
                 resetBtn.style.display = 'block';
-            }, 600); // Slightly longer shake for better feel
+            }, 600);
         }
 
         function resetCookie() {
             container.classList.remove('open');
             resetBtn.style.display = 'none';
+            // Wait for cookie to close before clearing text
             setTimeout(() => { display.innerHTML = ""; }, 400);
         }
     </script>
