@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Fortune Cookie</title>
     <style>
         body {
@@ -18,14 +18,14 @@
             touch-action: manipulation;
         }
 
-        /* Today's Date Header */
         #date-header {
-            color: #d63031; /* Classic Red */
+            color: #d63031;
             font-weight: bold;
             font-size: 1.1rem;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 1px;
+            text-align: center;
         }
 
         .cookie-wrapper {
@@ -58,17 +58,24 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             font-family: "Times New Roman", Times, serif;
             color: #1a1a1a;
-            text-align: center;
+            
+            /* The Unroll Animation */
             width: 0px; 
-            height: 80px;
+            height: 90px;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
+            overflow: hidden; /* This hides the text while width is 0 */
             opacity: 0;
             z-index: 1;
             transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        /* The Secret to Non-Dynamic Text: A Fixed Inner Container */
+        .fortune-content-inner {
+            width: 180px; /* Fixed width prevents jumping */
+            text-align: center;
+            flex-shrink: 0; /* Prevents the box from squeezing */
         }
 
         .cookie-half {
@@ -78,17 +85,16 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .open #left { transform: translateX(-85px) rotate(-20deg); }
-        .open #right { transform: translateX(85px) rotate(20deg); }
+        .open #left { transform: translateX(-95px) rotate(-20deg); }
+        .open #right { transform: translateX(95px) rotate(20deg); }
         
         .open .fortune-text { 
-            width: 200px; 
+            width: 210px; /* Slightly wider than the inner content */
             opacity: 1;
-            padding: 10px 15px;
         }
 
         #reset-btn {
-            margin-top: 40px;
+            margin-top: 50px;
             padding: 12px 24px;
             background: #d1ccc0;
             border: 2px solid #84817a;
@@ -113,7 +119,6 @@
     <button id="reset-btn" onclick="resetCookie()">Open Another Cookie</button>
 
     <script>
-        // Set the Date on Page Load
         function updateDate() {
             const now = new Date();
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -200,10 +205,13 @@
                 const random = Math.floor(Math.random() * fortunes.length);
                 const luckyNums = generateNumbers();
                 
+                // Wrap content in the 'inner' div to keep it static
                 display.innerHTML = `
-                    <div style="font-size: 0.9rem; margin-bottom: 5px; white-space: normal; line-height: 1.2;">${fortunes[random]}</div>
-                    <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold;">
-                        LUCKY NUMBERS: ${luckyNums}
+                    <div class="fortune-content-inner">
+                        <div style="font-size: 0.85rem; margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
+                        <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold;">
+                            LUCKY NUMBERS: ${luckyNums}
+                        </div>
                     </div>
                 `;
                 
