@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Fortune Cookie Scroll</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fortune Cookie</title>
     <style>
-        * { box-sizing: border-box; }
-        
         body {
             background-color: #f7f1e3;
             display: flex;
@@ -16,34 +14,42 @@
             min-height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
-            overflow: hidden; /* Prevent any bouncing/scrolling */
+            overflow: hidden; 
+            touch-action: manipulation;
         }
 
-        /* Subtler shake for mobile stability */
-        @keyframes subtleShake {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(-1deg); }
-            75% { transform: rotate(1deg); }
-            100% { transform: rotate(0deg); }
+        /* Today's Date Header */
+        #date-header {
+            color: #d63031; /* Classic Red */
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .cookie-wrapper {
             position: relative;
-            width: 90vw; /* Occupy 90% of screen width max */
-            max-width: 400px;
+            width: 320px; 
             height: 200px;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            margin: 0 auto;
+        }
+
+        @keyframes subtleShake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(-1.5deg); }
+            75% { transform: rotate(1.5deg); }
+            100% { transform: rotate(0deg); }
         }
 
         .shaking .cookie-half {
             animation: subtleShake 0.12s infinite;
         }
 
-        /* THE SCROLL PAPER */
+        /* FIXED SCROLL PAPER */
         .fortune-text {
             position: absolute;
             background: #fffdfa;
@@ -53,49 +59,36 @@
             font-family: "Times New Roman", Times, serif;
             color: #1a1a1a;
             text-align: center;
-            width: 0; 
-            opacity: 0;
-            z-index: 1;
+            width: 0px; 
+            height: 80px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
             overflow: hidden;
+            opacity: 0;
+            z-index: 1;
             transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
 
         .cookie-half {
-            width: 130px; /* Base size */
+            width: 130px;
             height: auto;
             z-index: 2;
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none; /* Allows click to pass through to container */
         }
 
-        /* DESKTOP OPEN STATE */
-        .open #left { transform: translateX(-100px) rotate(-20deg); }
-        .open #right { transform: translateX(100px) rotate(20deg); }
+        .open #left { transform: translateX(-85px) rotate(-20deg); }
+        .open #right { transform: translateX(85px) rotate(20deg); }
+        
         .open .fortune-text { 
-            width: 240px; 
+            width: 200px; 
             opacity: 1;
-            padding: 10px;
-        }
-
-        /* MOBILE OPTIMIZATION */
-        @media (max-width: 480px) {
-            .cookie-half {
-                width: 100px; /* Smaller images for mobile */
-            }
-            /* Narrower break so they don't hit screen edges */
-            .open #left { transform: translateX(-60px) rotate(-15deg); }
-            .open #right { transform: translateX(60px) rotate(15deg); }
-            .open .fortune-text { 
-                width: 160px; /* Narrower paper */
-                font-size: 0.85rem;
-            }
+            padding: 10px 15px;
         }
 
         #reset-btn {
-            margin-top: 30px;
+            margin-top: 40px;
             padding: 12px 24px;
             background: #d1ccc0;
             border: 2px solid #84817a;
@@ -104,11 +97,12 @@
             font-weight: bold;
             display: none;
             font-size: 1rem;
-            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
 <body>
+
+    <div id="date-header"></div>
 
     <div class="cookie-wrapper" id="cookie-container" onclick="openCookie()">
         <div id="fortune-display" class="fortune-text"></div>
@@ -119,6 +113,15 @@
     <button id="reset-btn" onclick="resetCookie()">Open Another Cookie</button>
 
     <script>
+        // Set the Date on Page Load
+        function updateDate() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = now.toLocaleDateString('en-US', options);
+            document.getElementById('date-header').innerText = "TODAY'S FORTUNE: " + formattedDate;
+        }
+        updateDate();
+
         const fortunes = [
             "A faithful friend is a strong defense.",
             "A fresh start will put all your doubts to rest.",
@@ -190,7 +193,6 @@
 
         function openCookie() {
             if (container.classList.contains('open') || container.classList.contains('shaking')) return;
-            
             container.classList.add('shaking');
 
             setTimeout(() => {
@@ -199,7 +201,7 @@
                 const luckyNums = generateNumbers();
                 
                 display.innerHTML = `
-                    <div style="margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
+                    <div style="font-size: 0.9rem; margin-bottom: 5px; white-space: normal; line-height: 1.2;">${fortunes[random]}</div>
                     <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold;">
                         LUCKY NUMBERS: ${luckyNums}
                     </div>
