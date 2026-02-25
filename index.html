@@ -10,7 +10,6 @@
     <link rel="manifest" href="manifest.json">
 
     <style>
-        /* ... (All your stabilized CSS from the previous step) ... */
         body {
             background-color: #f7f1e3;
             display: flex;
@@ -19,18 +18,19 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif; /* General UI is sans-serif */
             overflow: hidden; 
             touch-action: manipulation;
         }
 
         #date-header {
             color: #d63031;
+            font-family: "Times New Roman", Times, serif; /* Specific Serif request */
             font-weight: bold;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             margin-bottom: 30px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-align: center;
         }
 
@@ -105,16 +105,18 @@
     </style>
 </head>
 <body>
+
     <div id="date-header"></div>
+
     <div class="cookie-wrapper" id="cookie-container" onclick="openCookie()">
         <div id="fortune-display" class="fortune-text"></div>
         <img src="left.png" id="left" class="cookie-half" alt="Left">
         <img src="right.png" id="right" class="cookie-half" alt="Right">
     </div>
+
     <button id="reset-btn" onclick="resetCookie()">Open Another Cookie</button>
 
     <script>
-        /* ... (Same script logic as before) ... */
         function updateDate() {
             const now = new Date();
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -123,7 +125,61 @@
         }
         updateDate();
 
-        const fortunes = ["A faithful friend is a strong defense.","A fresh start will put all your doubts to rest.","A golden opportunity will shortly present itself.","A smile is your personal welcome mat.","All your hard work will soon pay off.","An exciting adventure awaits you.","Be on the lookout for coming events; they cast their shadows beforehand.","Believe in yourself and others will too.","Change is happening in your life, so go with the flow!","Don’t just think, act!","Every day is a new opportunity to reach your goals.","Expect much of yourself and little of others.","Failure is the chance to do better next time.","Follow your heart and you will find happiness.","Great things are in store for you.","Happiness is not a goal; it is a by-product.","Hard work pays off in the future, laziness pays off now.","If you want the rainbow, you must endure the rain.","Imagination rules the world.","It takes courage to grow up and become who you really are.","Keep your eyes open; a surprise is coming.","Listen to your heart; it knows the way.","Many will travel to exotic places, you will stay home and save money.","Nature, time, and patience are the three great physicians.","New discoveries will be made today.","Opportunity knocks on your door only once.","Patience is a virtue, but waiting too long is a mistake.","Practice makes perfect.","Remember to share good fortune with others.","Success is a journey, not a destination.","The best way to predict the future is to create it.","The heart is wiser than the intellect.","The road to riches is paved with hard work.","There is no such thing as a free lunch.","Things are not always as they seem.","Trust your intuition.","Wait for the right moment; it will come.","Wealth is not about having a lot of money; it's about having a lot of options.","What you seek is seeking you.","Wisdom is the reward you get for a lifetime of listening.","You are capable of more than you think.","You will be hungry again in one hour.","You will find great joy in the simple things.","You will live a long and happy life.","Your creativity will lead you to success.","Your kindness will be rewarded.","Your luck is about to change.","Your talents will be recognized and rewarded.","The reason it hasn’t happened yet is because it’s not supposed to happen yet","Don’t accept criticism from someone you wouldn’t accept advice from","To get something you don’t have, you have to do things you’ve never done.","Advice is like kissing. It costs nothing and is a pleasant thing to do.","Congratulations! You are on your way."];
+        const fortunes = [
+            "A faithful friend is a strong defense.",
+            "A fresh start will put all your doubts to rest.",
+            "A golden opportunity will shortly present itself.",
+            "A smile is your personal welcome mat.",
+            "All your hard work will soon pay off.",
+            "An exciting adventure awaits you.",
+            "Be on the lookout for coming events; they cast their shadows beforehand.",
+            "Believe in yourself and others will too.",
+            "Change is happening in your life, so go with the flow!",
+            "Don’t just think, act!",
+            "Every day is a new opportunity to reach your goals.",
+            "Expect much of yourself and little of others.",
+            "Failure is the chance to do better next time.",
+            "Follow your heart and you will find happiness.",
+            "Great things are in store for you.",
+            "Happiness is not a goal; it is a by-product.",
+            "Hard work pays off in the future, laziness pays off now.",
+            "If you want the rainbow, you must endure the rain.",
+            "Imagination rules the world.",
+            "It takes courage to grow up and become who you really are.",
+            "Keep your eyes open; a surprise is coming.",
+            "Listen to your heart; it knows the way.",
+            "Many will travel to exotic places, you will stay home and save money.",
+            "Nature, time, and patience are the three great physicians.",
+            "New discoveries will be made today.",
+            "Opportunity knocks on your door only once.",
+            "Patience is a virtue, but waiting too long is a mistake.",
+            "Practice makes perfect.",
+            "Remember to share good fortune with others.",
+            "Success is a journey, not a destination.",
+            "The best way to predict the future is to create it.",
+            "The heart is wiser than the intellect.",
+            "The road to riches is paved with hard work.",
+            "There is no such thing as a free lunch.",
+            "Things are not always as they seem.",
+            "Trust your intuition.",
+            "Wait for the right moment; it will come.",
+            "Wealth is not about having a lot of money; it's about having a lot of options.",
+            "What you seek is seeking you.",
+            "Wisdom is the reward you get for a lifetime of listening.",
+            "You are capable of more than you think.",
+            "You will be hungry again in one hour.",
+            "You will find great joy in the simple things.",
+            "You will live a long and happy life.",
+            "Your creativity will lead you to success.",
+            "Your kindness will be rewarded.",
+            "Your luck is about to change.",
+            "Your talents will be recognized and rewarded.",
+            "The reason it hasn’t happened yet is because it’s not supposed to happen yet",
+            "Don’t accept criticism from someone you wouldn’t accept advice from",
+            "To get something you don’t have, you have to do things you’ve never done.",
+            "Advice is like kissing. It costs nothing and is a pleasant thing to do.",
+            "Congratulations! You are on your way."
+        ];
 
         const container = document.getElementById('cookie-container');
         const display = document.getElementById('fortune-display');
@@ -141,13 +197,21 @@
         function openCookie() {
             if (container.classList.contains('open') || container.classList.contains('shaking')) return;
             container.classList.add('shaking');
+
             setTimeout(() => {
                 container.classList.remove('shaking');
                 const random = Math.floor(Math.random() * fortunes.length);
-                display.innerHTML = `<div class="fortune-content-inner">
-                    <div style="font-size: 0.85rem; margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
-                    <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold;">LUCKY NUMBERS: ${generateNumbers()}</div>
-                </div>`;
+                const luckyNums = generateNumbers();
+                
+                display.innerHTML = `
+                    <div class="fortune-content-inner">
+                        <div style="font-size: 0.85rem; margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
+                        <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold;">
+                            LUCKY NUMBERS: ${luckyNums}
+                        </div>
+                    </div>
+                `;
+                
                 container.classList.add('open');
                 resetBtn.style.display = 'block';
             }, 600);
