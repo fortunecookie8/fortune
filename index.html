@@ -8,6 +8,7 @@
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="icon" type="image/png" href="icon.png">
     <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#d63031">
 
     <style>
         body {
@@ -18,14 +19,14 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            font-family: Arial, sans-serif; /* General UI is sans-serif */
+            font-family: Arial, sans-serif;
             overflow: hidden; 
             touch-action: manipulation;
         }
 
         #date-header {
             color: #d63031;
-            font-family: "Times New Roman", Times, serif; /* Specific Serif request */
+            font-family: "Times New Roman", Times, serif;
             font-weight: bold;
             font-size: 1.2rem;
             margin-bottom: 30px;
@@ -55,6 +56,7 @@
             animation: subtleShake 0.12s infinite;
         }
 
+        /* STABILIZED SCROLL PAPER */
         .fortune-text {
             position: absolute;
             background: #fffdfa;
@@ -63,8 +65,8 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             font-family: "Times New Roman", Times, serif;
             color: #1a1a1a;
-            width: 0px; 
-            height: 90px;
+            width: 0px; /* Starts at zero for the unroll effect */
+            height: 95px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -74,6 +76,7 @@
             transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
 
+        /* Prevents text from reflowing/jumping during unroll */
         .fortune-content-inner {
             width: 180px;
             text-align: center;
@@ -87,9 +90,13 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
+        /* FIXED ANIMATION DISTANCE */
         .open #left { transform: translateX(-95px) rotate(-20deg); }
         .open #right { transform: translateX(95px) rotate(20deg); }
-        .open .fortune-text { width: 210px; opacity: 1; }
+        .open .fortune-text { 
+            width: 210px; 
+            opacity: 1; 
+        }
 
         #reset-btn {
             margin-top: 50px;
@@ -101,6 +108,11 @@
             font-weight: bold;
             display: none;
             font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #reset-btn:active {
+            transform: translateY(2px);
         }
     </style>
 </head>
@@ -110,13 +122,14 @@
 
     <div class="cookie-wrapper" id="cookie-container" onclick="openCookie()">
         <div id="fortune-display" class="fortune-text"></div>
-        <img src="left.png" id="left" class="cookie-half" alt="Left">
-        <img src="right.png" id="right" class="cookie-half" alt="Right">
+        <img src="left.png" id="left" class="cookie-half" alt="Left Cookie Piece">
+        <img src="right.png" id="right" class="cookie-half" alt="Right Cookie Piece">
     </div>
 
-    <button id="reset-btn" onclick="resetCookie()">Open Another Cookie</button>
+    <button id="reset-btn" onclick="resetCookie()">OPEN ANOTHER COOKIE</button>
 
     <script>
+        // Automatic Date Update
         function updateDate() {
             const now = new Date();
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -178,6 +191,7 @@
             "Don’t accept criticism from someone you wouldn’t accept advice from",
             "To get something you don’t have, you have to do things you’ve never done.",
             "Advice is like kissing. It costs nothing and is a pleasant thing to do.",
+            "Remember to call your mom.",
             "Congratulations! You are on your way."
         ];
 
@@ -196,6 +210,7 @@
 
         function openCookie() {
             if (container.classList.contains('open') || container.classList.contains('shaking')) return;
+            
             container.classList.add('shaking');
 
             setTimeout(() => {
@@ -205,8 +220,8 @@
                 
                 display.innerHTML = `
                     <div class="fortune-content-inner">
-                        <div style="font-size: 0.85rem; margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
-                        <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold;">
+                        <div style="font-size: 0.9rem; margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
+                        <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold; letter-spacing: 1px;">
                             LUCKY NUMBERS: ${luckyNums}
                         </div>
                     </div>
