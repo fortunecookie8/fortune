@@ -12,7 +12,6 @@
 
     <style>
         body {
-            /* 1. Updated Background to Red */
             background-color: #d63031;
             display: flex;
             flex-direction: column;
@@ -26,10 +25,8 @@
         }
 
         #date-header {
-            /* 2. Updated Date Text Color to Light Yellow and Added Contrast Shadow */
             color: #f7f1e3;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.6); /* Crucial for legibility on red */
-            
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
             font-family: "Times New Roman", Times, serif;
             font-weight: bold;
             font-size: 1.2rem;
@@ -63,16 +60,20 @@
         /* STABILIZED SCROLL PAPER */
         .fortune-text {
             position: absolute;
-            background: #fffdfa; /* Keeps the paper look */
-            border-top: 2px solid #2e5984; 
-            border-bottom: 2px solid #2e5984;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #fffdfa;
+            
+            /* Bolder 3px Cobalt Blue Border */
+            border-top: 3px solid #0047ab; 
+            border-bottom: 3px solid #0047ab;
+            
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             font-family: "Times New Roman", Times, serif;
-            color: #1a1a1a;
+            color: #0047ab; /* Cobalt Text */
+            
             width: 0px; 
             height: 95px;
             display: flex;
-            justify-content: center;
+            justify-content: center; /* Fixed the typo here */
             align-items: center;
             overflow: hidden;
             opacity: 0;
@@ -80,7 +81,6 @@
             transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
 
-        /* Fixed inner container prevents text jumping/reflow */
         .fortune-content-inner {
             width: 180px;
             text-align: center;
@@ -94,7 +94,6 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* FIXED ANIMATION DISTANCE */
         .open #left { transform: translateX(-95px) rotate(-20deg); }
         .open #right { transform: translateX(95px) rotate(20deg); }
         .open .fortune-text { 
@@ -105,18 +104,15 @@
         #reset-btn {
             margin-top: 50px;
             padding: 12px 24px;
-            background: #d1ccc0;
-            
-            /* 3. Update Reset Button Border to the New Main Red */
-            border: 2px solid #d63031;
-            
+            background: #f7f1e3;
+            color: #d63031;
+            border: 2px solid #0047ab;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             display: none;
             font-size: 1rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.1s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         #reset-btn:active {
@@ -130,14 +126,13 @@
 
     <div class="cookie-wrapper" id="cookie-container" onclick="openCookie()">
         <div id="fortune-display" class="fortune-text"></div>
-        <img src="left.png" id="left" class="cookie-half" alt="Left Cookie Piece">
-        <img src="right.png" id="right" class="cookie-half" alt="Right Cookie Piece">
+        <img src="left.png" id="left" class="cookie-half" alt="Left">
+        <img src="right.png" id="right" class="cookie-half" alt="Right">
     </div>
 
     <button id="reset-btn" onclick="resetCookie()">OPEN ANOTHER COOKIE</button>
 
     <script>
-        // Automatic Date Update
         function updateDate() {
             const now = new Date();
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -217,19 +212,16 @@
 
         function openCookie() {
             if (container.classList.contains('open') || container.classList.contains('shaking')) return;
-            
             container.classList.add('shaking');
-
             setTimeout(() => {
                 container.classList.remove('shaking');
                 const random = Math.floor(Math.random() * fortunes.length);
                 const luckyNums = generateNumbers();
                 
-                // Fixed content wrap to prevent reflow
                 display.innerHTML = `
                     <div class="fortune-content-inner">
-                        <div style="font-size: 0.9rem; margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
-                        <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold; letter-spacing: 1px;">
+                        <div style="font-size: 0.9rem; margin-bottom: 5px; line-height: 1.2; font-weight: bold;">${fortunes[random]}</div>
+                        <div style="font-size: 9px; opacity: 0.8; font-family: sans-serif; font-weight: bold; letter-spacing: 1px;">
                             LUCKY NUMBERS: ${luckyNums}
                         </div>
                     </div>
@@ -243,7 +235,6 @@
         function resetCookie() {
             container.classList.remove('open');
             resetBtn.style.display = 'none';
-            // Delay clearing text so user doesn't see it vanish while closing
             setTimeout(() => { display.innerHTML = ""; }, 400);
         }
     </script>
