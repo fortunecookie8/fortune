@@ -12,7 +12,6 @@
 
     <style>
         body {
-            /* 1. Updated Background to Red */
             background-color: #d63031;
             display: flex;
             flex-direction: column;
@@ -26,10 +25,8 @@
         }
 
         #date-header {
-            /* 2. Updated Date Text Color to Light Yellow and Added Contrast Shadow */
             color: #f7f1e3;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.6); /* Crucial for legibility on red */
-            
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
             font-family: "Times New Roman", Times, serif;
             font-weight: bold;
             font-size: 1.2rem;
@@ -63,16 +60,22 @@
         /* STABILIZED SCROLL PAPER */
         .fortune-text {
             position: absolute;
-            background: #fffdfa; /* Keeps the paper look */
-            border-top: 2px solid #2e5984; 
-            border-bottom: 2px solid #2e5984;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background: #fffdfa;
+            
+            /* 1. BOLDER BORDER: Increased to 3px and set to Cobalt Blue */
+            border-top: 3px solid #0047ab; 
+            border-bottom: 3px solid #0047ab;
+            
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             font-family: "Times New Roman", Times, serif;
-            color: #1a1a1a;
+            
+            /* 2. COBALT TEXT: Setting the default color for the whole scroll */
+            color: #0047ab; 
+            
             width: 0px; 
             height: 95px;
             display: flex;
-            justify-content: center;
+            justify(content: center;
             align-items: center;
             overflow: hidden;
             opacity: 0;
@@ -80,7 +83,6 @@
             transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
 
-        /* Fixed inner container prevents text jumping/reflow */
         .fortune-content-inner {
             width: 180px;
             text-align: center;
@@ -94,7 +96,6 @@
             transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* FIXED ANIMATION DISTANCE */
         .open #left { transform: translateX(-95px) rotate(-20deg); }
         .open #right { transform: translateX(95px) rotate(20deg); }
         .open .fortune-text { 
@@ -106,17 +107,13 @@
             margin-top: 50px;
             padding: 12px 24px;
             background: #d1ccc0;
-            
-            /* 3. Update Reset Button Border to the New Main Red */
             border: 2px solid #d63031;
-            
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             display: none;
             font-size: 1rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.1s ease;
         }
 
         #reset-btn:active {
@@ -130,14 +127,13 @@
 
     <div class="cookie-wrapper" id="cookie-container" onclick="openCookie()">
         <div id="fortune-display" class="fortune-text"></div>
-        <img src="left.png" id="left" class="cookie-half" alt="Left Cookie Piece">
-        <img src="right.png" id="right" class="cookie-half" alt="Right Cookie Piece">
+        <img src="left.png" id="left" class="cookie-half" alt="Left">
+        <img src="right.png" id="right" class="cookie-half" alt="Right">
     </div>
 
     <button id="reset-btn" onclick="resetCookie()">OPEN ANOTHER COOKIE</button>
 
     <script>
-        // Automatic Date Update
         function updateDate() {
             const now = new Date();
             const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -146,61 +142,7 @@
         }
         updateDate();
 
-        const fortunes = [
-            "A faithful friend is a strong defense.",
-            "A fresh start will put all your doubts to rest.",
-            "A golden opportunity will shortly present itself.",
-            "A smile is your personal welcome mat.",
-            "All your hard work will soon pay off.",
-            "An exciting adventure awaits you.",
-            "Be on the lookout for coming events; they cast their shadows beforehand.",
-            "Believe in yourself and others will too.",
-            "Change is happening in your life, so go with the flow!",
-            "Don’t just think, act!",
-            "Every day is a new opportunity to reach your goals.",
-            "Expect much of yourself and little of others.",
-            "Failure is the chance to do better next time.",
-            "Follow your heart and you will find happiness.",
-            "Great things are in store for you.",
-            "Happiness is not a goal; it is a by-product.",
-            "Hard work pays off in the future, laziness pays off now.",
-            "If you want the rainbow, you must endure the rain.",
-            "Imagination rules the world.",
-            "It takes courage to grow up and become who you really are.",
-            "Keep your eyes open; a surprise is coming.",
-            "Listen to your heart; it knows the way.",
-            "Many will travel to exotic places, you will stay home and save money.",
-            "Nature, time, and patience are the three great physicians.",
-            "New discoveries will be made today.",
-            "Opportunity knocks on your door only once.",
-            "Patience is a virtue, but waiting too long is a mistake.",
-            "Practice makes perfect.",
-            "Remember to share good fortune with others.",
-            "Success is a journey, not a destination.",
-            "The best way to predict the future is to create it.",
-            "The heart is wiser than the intellect.",
-            "The road to riches is paved with hard work.",
-            "There is no such thing as a free lunch.",
-            "Things are not always as they seem.",
-            "Trust your intuition.",
-            "Wait for the right moment; it will come.",
-            "Wealth is not about having a lot of money; it's about having a lot of options.",
-            "What you seek is seeking you.",
-            "Wisdom is the reward you get for a lifetime of listening.",
-            "You are capable of more than you think.",
-            "You will be hungry again in one hour.",
-            "You will find great joy in the simple things.",
-            "You will live a long and happy life.",
-            "Your creativity will lead you to success.",
-            "Your kindness will be rewarded.",
-            "Your luck is about to change.",
-            "Your talents will be recognized and rewarded.",
-            "The reason it hasn’t happened yet is because it’s not supposed to happen yet",
-            "Don’t accept criticism from someone you wouldn’t accept advice from",
-            "To get something you don’t have, you have to do things you’ve never done.",
-            "Advice is like kissing. It costs nothing and is a pleasant thing to do.",
-            "Congratulations! You are on your way."
-        ];
+        const fortunes = ["A faithful friend is a strong defense.","A fresh start will put all your doubts to rest.","A golden opportunity will shortly present itself.","A smile is your personal welcome mat.","All your hard work will soon pay off.","An exciting adventure awaits you.","Be on the lookout for coming events; they cast their shadows beforehand.","Believe in yourself and others will too.","Change is happening in your life, so go with the flow!","Don’t just think, act!","Every day is a new opportunity to reach your goals.","Expect much of yourself and little of others.","Failure is the chance to do better next time.","Follow your heart and you will find happiness.","Great things are in store for you.","Happiness is not a goal; it is a by-product.","Hard work pays off in the future, laziness pays off now.","If you want the rainbow, you must endure the rain.","Imagination rules the world.","It takes courage to grow up and become who you really are.","Keep your eyes open; a surprise is coming.","Listen to your heart; it knows the way.","Many will travel to exotic places, you will stay home and save money.","Nature, time, and patience are the three great physicians.","New discoveries will be made today.","Opportunity knocks on your door only once.","Patience is a virtue, but waiting too long is a mistake.","Practice makes perfect.","Remember to share good fortune with others.","Success is a journey, not a destination.","The best way to predict the future is to create it.","The heart is wiser than the intellect.","The road to riches is paved with hard work.","There is no such thing as a free lunch.","Things are not always as they seem.","Trust your intuition.","Wait for the right moment; it will come.","Wealth is not about having a lot of money; it's about having a lot of options.","What you seek is seeking you.","Wisdom is the reward you get for a lifetime of listening.","You are capable of more than you think.","You will be hungry again in one hour.","You will find great joy in the simple things.","You will live a long and happy life.","Your creativity will lead you to success.","Your kindness will be rewarded.","Your luck is about to change.","Your talents will be recognized and rewarded.","The reason it hasn’t happened yet is because it’s not supposed to happen yet","Don’t accept criticism from someone you wouldn’t accept advice from","To get something you don’t have, you have to do things you’ve never done.","Advice is like kissing. It costs nothing and is a pleasant thing to do.","Congratulations! You are on your way."];
 
         const container = document.getElementById('cookie-container');
         const display = document.getElementById('fortune-display');
@@ -217,19 +159,17 @@
 
         function openCookie() {
             if (container.classList.contains('open') || container.classList.contains('shaking')) return;
-            
             container.classList.add('shaking');
-
             setTimeout(() => {
                 container.classList.remove('shaking');
                 const random = Math.floor(Math.random() * fortunes.length);
                 const luckyNums = generateNumbers();
                 
-                // Fixed content wrap to prevent reflow
+                // Content is now naturally Cobalt because of the container color
                 display.innerHTML = `
                     <div class="fortune-content-inner">
-                        <div style="font-size: 0.9rem; margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
-                        <div style="font-size: 9px; color: #777; font-family: sans-serif; font-weight: bold; letter-spacing: 1px;">
+                        <div style="font-size: 0.9rem; margin-bottom: 5px; line-height: 1.2; font-weight: bold;">${fortunes[random]}</div>
+                        <div style="font-size: 9px; opacity: 0.8; font-family: sans-serif; font-weight: bold; letter-spacing: 1px;">
                             LUCKY NUMBERS: ${luckyNums}
                         </div>
                     </div>
@@ -243,7 +183,6 @@
         function resetCookie() {
             container.classList.remove('open');
             resetBtn.style.display = 'none';
-            // Delay clearing text so user doesn't see it vanish while closing
             setTimeout(() => { display.innerHTML = ""; }, 400);
         }
     </script>
