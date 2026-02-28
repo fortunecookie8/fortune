@@ -12,7 +12,8 @@
 
     <style>
         body {
-            background-color: #f7f1e3;
+            /* 1. Updated Background to Red */
+            background-color: #d63031;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -25,7 +26,10 @@
         }
 
         #date-header {
-            color: #d63031;
+            /* 2. Updated Date Text Color to Light Yellow and Added Contrast Shadow */
+            color: #f7f1e3;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6); /* Crucial for legibility on red */
+            
             font-family: "Times New Roman", Times, serif;
             font-weight: bold;
             font-size: 1.2rem;
@@ -59,13 +63,13 @@
         /* STABILIZED SCROLL PAPER */
         .fortune-text {
             position: absolute;
-            background: #fffdfa;
+            background: #fffdfa; /* Keeps the paper look */
             border-top: 2px solid #2e5984; 
             border-bottom: 2px solid #2e5984;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             font-family: "Times New Roman", Times, serif;
             color: #1a1a1a;
-            width: 0px; /* Starts at zero for the unroll effect */
+            width: 0px; 
             height: 95px;
             display: flex;
             justify-content: center;
@@ -76,7 +80,7 @@
             transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
         }
 
-        /* Prevents text from reflowing/jumping during unroll */
+        /* Fixed inner container prevents text jumping/reflow */
         .fortune-content-inner {
             width: 180px;
             text-align: center;
@@ -102,13 +106,17 @@
             margin-top: 50px;
             padding: 12px 24px;
             background: #d1ccc0;
-            border: 2px solid #84817a;
+            
+            /* 3. Update Reset Button Border to the New Main Red */
+            border: 2px solid #d63031;
+            
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             display: none;
             font-size: 1rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.1s ease;
         }
 
         #reset-btn:active {
@@ -191,7 +199,6 @@
             "Don’t accept criticism from someone you wouldn’t accept advice from",
             "To get something you don’t have, you have to do things you’ve never done.",
             "Advice is like kissing. It costs nothing and is a pleasant thing to do.",
-            "Remember to call your mom.",
             "Congratulations! You are on your way."
         ];
 
@@ -218,6 +225,7 @@
                 const random = Math.floor(Math.random() * fortunes.length);
                 const luckyNums = generateNumbers();
                 
+                // Fixed content wrap to prevent reflow
                 display.innerHTML = `
                     <div class="fortune-content-inner">
                         <div style="font-size: 0.9rem; margin-bottom: 5px; line-height: 1.2;">${fortunes[random]}</div>
@@ -235,6 +243,7 @@
         function resetCookie() {
             container.classList.remove('open');
             resetBtn.style.display = 'none';
+            // Delay clearing text so user doesn't see it vanish while closing
             setTimeout(() => { display.innerHTML = ""; }, 400);
         }
     </script>
