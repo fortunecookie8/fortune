@@ -57,23 +57,18 @@
             animation: subtleShake 0.12s infinite;
         }
 
-        /* STABILIZED SCROLL PAPER */
         .fortune-text {
             position: absolute;
             background: #fffdfa;
-            
-            /* Bolder 3px Cobalt Blue Border */
             border-top: 3px solid #0047ab; 
             border-bottom: 3px solid #0047ab;
-            
             box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             font-family: "Times New Roman", Times, serif;
-            color: #0047ab; /* Cobalt Text */
-            
+            color: #0047ab;
             width: 0px; 
             height: 95px;
             display: flex;
-            justify-content: center; /* Fixed the typo here */
+            justify-content: center;
             align-items: center;
             overflow: hidden;
             opacity: 0;
@@ -103,20 +98,25 @@
 
         #reset-btn {
             margin-top: 50px;
-            padding: 12px 24px;
+            padding: 10px 20px;
             background: #f7f1e3;
-            color: #d63031;
+            color: #0047ab;
             border: 2px solid #0047ab;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
+            font-family: "Times New Roman", Times, serif;
+            font-size: 0.85rem;
             font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             display: none;
-            font-size: 1rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: transform 0.1s ease, background-color 0.2s ease;
         }
 
         #reset-btn:active {
             transform: translateY(2px);
+            background-color: #e0d9c8;
         }
     </style>
 </head>
@@ -130,7 +130,7 @@
         <img src="right.png" id="right" class="cookie-half" alt="Right">
     </div>
 
-    <button id="reset-btn" onclick="resetCookie()">OPEN ANOTHER COOKIE</button>
+    <button id="reset-btn" onclick="resetCookie()">Open Another Cookie</button>
 
     <script>
         function updateDate() {
@@ -194,7 +194,10 @@
             "Don’t accept criticism from someone you wouldn’t accept advice from",
             "To get something you don’t have, you have to do things you’ve never done.",
             "Advice is like kissing. It costs nothing and is a pleasant thing to do.",
-            "Congratulations! You are on your way."
+            "Congratulations! You are on your way.",
+            "You don't have to be great to start, you just have to start to be great.",
+            "Self doubt kills more dreams than failure ever will.",
+            "It takes the same amount of energy to think about what can go wrong as what can go right."
         ];
 
         const container = document.getElementById('cookie-container');
